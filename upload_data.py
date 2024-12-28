@@ -5,7 +5,6 @@ from mysql.connector import Error
 from config import get_db_connection  
 
 def insert_product(cursor, product):
-    #chèn một sản phầm vào 
     command = """
     INSERT INTO products (id, name, url_key, price, description, images_url)
     VALUES (%s, %s, %s, %s, %s, %s)
@@ -20,7 +19,6 @@ def insert_product(cursor, product):
     ))
 
 def load_json_files_to_db(directory):
-    # Kết nối cơ sở dữ liệu
     connection, cursor = get_db_connection()
     if connection is None or cursor is None:
         print("Không thể kết nối tới cơ sở dữ liệu.")
@@ -35,7 +33,7 @@ def load_json_files_to_db(directory):
                     products = json.load(f)
                     for product in products:
                         try:
-                            insert_product(cursor, product)  # Chèn sản phẩm
+                            insert_product(cursor, product)  
                             total_products += 1
                             connection.commit()  # Commit mỗi khi chèn thành công
                             print(f"Đã chèn sản phẩm ID: {product['id']}")
@@ -70,17 +68,16 @@ if __name__ == "__main__":
             "https://salt.tikicdn.com/ts/product/2f/f4/53/c7b86df00b395a9c5157e99d266d5e1a.jpg"
         ]
     },
-    # Bạn có thể thêm các sản phẩm khác ở đây...
 ]
 
-connection, cursor = get_db_connection()  # Tách tuple thành connection và cursor
+connection, cursor = get_db_connection()  
 
 if connection is None or cursor is None:
     print("Không thể kết nối tới cơ sở dữ liệu.")
 else:
     try:
         # Thực hiện các thao tác chèn dữ liệu
-        product = product_json[0]  # Lấy sản phẩm đầu tiên trong JSON
+        product = product_json[0]  
         insert_product(cursor, product)
         connection.commit()
         print("Chèn sản phẩm thành công!")
@@ -89,5 +86,5 @@ else:
         print("Lỗi khi chèn sản phẩm:", e)
     finally:
         cursor.close()
-        connection.close()  # Đóng kết nối sau khi thực hiện xong
+        connection.close()  
 '''        
